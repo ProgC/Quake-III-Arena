@@ -40,6 +40,8 @@ MAIN MENU
 #define ID_TEAMARENA		15
 #define ID_MODS					16
 #define ID_EXIT					17
+#define ID_PROGC					18
+
 
 #define MAIN_BANNER_MODEL				"models/mapobjects/banner/banner5.md3"
 #define MAIN_MENU_VERTICAL_SPACING		34
@@ -56,6 +58,7 @@ typedef struct {
 	menutext_s		teamArena;
 	menutext_s		mods;
 	menutext_s		exit;
+	menutext_s		progc;
 
 	qhandle_t		bannerModel;
 } mainmenu_t;
@@ -127,6 +130,9 @@ void Main_MenuEvent (void* ptr, int event) {
 
 	case ID_EXIT:
 		UI_ConfirmMenu( "EXIT GAME?", NULL, MainMenu_ExitAction );
+		break;
+
+	case ID_PROGC:
 		break;
 	}
 }
@@ -401,6 +407,18 @@ void UI_MainMenu( void ) {
 	s_main.exit.color						= color_red;
 	s_main.exit.style						= style;
 
+	y += MAIN_MENU_VERTICAL_SPACING;
+	s_main.progc.generic.type = MTYPE_PTEXT;
+	s_main.progc.generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
+	s_main.progc.generic.x = 320;
+	s_main.progc.generic.y = y;
+	s_main.progc.generic.id = ID_PROGC;
+	s_main.progc.generic.callback = Main_MenuEvent;
+	s_main.progc.string = "PROGC";
+	s_main.progc.color = color_blue;
+	s_main.progc.style = style;
+
+
 	Menu_AddItem( &s_main.menu,	&s_main.singleplayer );
 	Menu_AddItem( &s_main.menu,	&s_main.multiplayer );
 	Menu_AddItem( &s_main.menu,	&s_main.setup );
@@ -410,7 +428,8 @@ void UI_MainMenu( void ) {
 		Menu_AddItem( &s_main.menu,	&s_main.teamArena );
 	}
 	Menu_AddItem( &s_main.menu,	&s_main.mods );
-	Menu_AddItem( &s_main.menu,	&s_main.exit );             
+	Menu_AddItem( &s_main.menu,	&s_main.exit );  
+	Menu_AddItem(&s_main.menu, &s_main.progc);
 
 	trap_Key_SetCatcher( KEYCATCH_UI );
 	uis.menusp = 0;
